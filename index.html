@@ -2,12 +2,12 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Caixa de Cartas</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+ 
   :root {
     --cream: #f5efe0;
     --paper: #faf6ed;
@@ -20,29 +20,33 @@
     --red-flag: #b83232;
     --gold: #c9921a;
     --shadow: rgba(30,15,0,0.55);
-    --letter-w: min(520px, 90vw);
   }
-
+ 
   html, body {
-    width: 100%; height: 100%;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     background: #1a0f04;
     font-family: 'Lora', serif;
     color: var(--ink);
-    cursor: default;
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
-
+ 
   #scene {
-    width: 100%; height: 100%;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     position: relative;
     background:
       radial-gradient(ellipse 80% 60% at 50% 100%, #3d1e00 0%, transparent 70%),
       radial-gradient(ellipse 100% 80% at 50% 50%, #2b1400 0%, #0e0700 100%);
   }
-
+ 
   .dust { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
   .dust span {
     position: absolute; width: 2px; height: 2px; border-radius: 50%;
@@ -55,27 +59,29 @@
     90%  { opacity: 0.6; }
     100% { transform: translateY(-20px) translateX(var(--dx)) scale(1.5); opacity: 0; }
   }
-
+ 
+  /* ── MAILBOX ── */
   #mailbox-wrap {
-    position: relative; width: 280px;
+    position: relative;
+    width: 220px;
     transition: transform .4s ease;
-    filter: drop-shadow(0 30px 60px rgba(0,0,0,0.7));
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.7));
   }
-  #mailbox-wrap:hover { transform: translateY(-6px); }
-
+  #mailbox-wrap:active { transform: scale(0.97); }
+ 
   .post {
-    width: 18px; height: 140px; margin: 0 auto;
+    width: 16px; height: 110px; margin: 0 auto;
     background: linear-gradient(90deg, var(--wood-dark) 0%, var(--wood-mid) 40%, var(--wood-highlight) 55%, var(--wood-mid) 100%);
     border-radius: 3px; position: relative;
   }
   .post::after {
     content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-    width: 36px; height: 8px; background: var(--wood-dark); border-radius: 4px 4px 2px 2px;
+    width: 30px; height: 7px; background: var(--wood-dark); border-radius: 4px 4px 2px 2px;
   }
-
-  .box { width: 200px; margin: 0 auto; position: relative; cursor: pointer; }
+ 
+  .box { width: 170px; margin: 0 auto; position: relative; cursor: pointer; }
   .box-body {
-    width: 200px; height: 110px;
+    width: 170px; height: 95px;
     background: linear-gradient(160deg, var(--wood-light) 0%, var(--wood-mid) 50%, var(--wood-dark) 100%);
     border-radius: 6px 6px 4px 4px; position: relative; overflow: visible;
     border: 2px solid var(--wood-dark);
@@ -84,36 +90,19 @@
     content: ''; position: absolute; inset: 0; border-radius: inherit;
     background: repeating-linear-gradient(92deg, transparent 0px, transparent 14px, rgba(0,0,0,0.08) 14px, rgba(0,0,0,0.08) 15px);
   }
-
   .box-slot {
-    position: absolute; top: 18px; left: 20px; right: 20px; height: 8px;
+    position: absolute; top: 16px; left: 16px; right: 16px; height: 7px;
     background: rgba(0,0,0,0.7); border-radius: 4px;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.9), 0 1px 0 rgba(255,255,255,0.08);
   }
-    .letter-content img {
-    display: block;
-    width: 85%;                        /* um pouco maior */
-    max-width: 85%;
-    height: auto;                      /* proporcional */
-    margin: 16px auto;
-    pointer-events: none;
-
-    /* remove o fundo branco/colorido da imagem (funciona só com PNG transparente) */
-    mix-blend-mode: multiply;          /* funde a imagem com o fundo do papel */
-    background: transparent;
-
-    /* sem borda arredondada e sem sombra, para não "revelar" o fundo */
-    border-radius: 0;
-    box-shadow: none;
-  }
-
+ 
   .letters-out {
-    position: absolute; top: -28px; left: 0; right: 0; height: 36px;
+    position: absolute; top: -24px; left: 0; right: 0; height: 30px;
     display: flex; align-items: flex-end; justify-content: center; gap: 4px;
     pointer-events: none;
   }
   .letter-peek {
-    width: 44px; height: 26px; border-radius: 3px 3px 0 0;
+    width: 38px; height: 22px; border-radius: 3px 3px 0 0;
     border: 1.5px solid rgba(0,0,0,0.25); position: relative; flex-shrink: 0;
     animation: peek-bob var(--dur, 3s) ease-in-out infinite;
     animation-delay: var(--del, 0s);
@@ -122,19 +111,15 @@
     0%,100% { transform: translateY(0) rotate(var(--rot,0deg)); }
     50%      { transform: translateY(-4px) rotate(var(--rot,0deg)); }
   }
-  .letter-peek::after {
-    content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-    width: 60%; height: 1px; background: rgba(0,0,0,0.15);
-  }
-
+ 
   .flag-pole {
-    position: absolute; right: -22px; top: -30px;
-    width: 4px; height: 52px;
+    position: absolute; right: -18px; top: -26px;
+    width: 4px; height: 46px;
     background: linear-gradient(90deg, #555 0%, #999 50%, #555 100%);
     border-radius: 2px;
   }
   .flag {
-    position: absolute; top: 2px; left: 4px; width: 22px; height: 15px;
+    position: absolute; top: 2px; left: 4px; width: 20px; height: 13px;
     background: var(--red-flag); border-radius: 0 3px 3px 0;
     clip-path: polygon(0 0, 100% 20%, 100% 80%, 0 100%);
     animation: flag-wave 2s ease-in-out infinite;
@@ -143,138 +128,113 @@
     0%,100% { transform: skewY(-2deg); }
     50%      { transform: skewY(3deg) scaleX(0.95); }
   }
-
+ 
   .box-lid {
-    width: 220px; height: 30px;
+    width: 188px; height: 26px;
     background: linear-gradient(180deg, var(--wood-highlight) 0%, var(--wood-mid) 100%);
     margin: 0 auto; border-radius: 8px 8px 2px 2px;
     border: 2px solid var(--wood-dark); border-bottom: none;
     position: relative; top: 1px;
   }
-  .box-lid::after {
-    content: ''; position: absolute; bottom: 0; left: 10px; right: 10px;
-    height: 1px; background: rgba(0,0,0,0.3);
-  }
-
+ 
   .address-plate {
-    position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
-    width: 90px; height: 18px;
+    position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+    width: 80px; height: 16px;
     background: linear-gradient(90deg, #c0a060, #f0d890, #c0a060);
     border-radius: 3px; display: flex; align-items: center; justify-content: center;
-    font-family: 'Playfair Display', serif; font-size: 8px; letter-spacing: 1.5px;
+    font-family: 'Playfair Display', serif; font-size: 7px; letter-spacing: 1.5px;
     color: #5a3a00; font-weight: 700;
   }
-
+ 
   #hint {
-    margin-top: 32px; font-family: 'Playfair Display', serif; font-style: italic;
-    font-size: clamp(14px, 2.5vw, 18px); color: rgba(210,175,110,0.75);
+    margin-top: 28px;
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 14px; color: rgba(210,175,110,0.75);
     letter-spacing: 0.04em; animation: hint-pulse 2.5s ease-in-out infinite; pointer-events: none;
+    text-align: center; padding: 0 20px;
   }
   @keyframes hint-pulse { 0%,100% { opacity: .7; } 50% { opacity: 1; } }
-
+ 
+  /* ── OVERLAY ── */
   #overlay {
-    position: fixed; inset: 0; background: rgba(10,5,0,0); pointer-events: none; transition: background .5s; z-index: 5;
+    position: fixed; inset: 0; background: rgba(10,5,0,0); pointer-events: none;
+    transition: background .5s; z-index: 5;
   }
-  #overlay.active { background: rgba(10,5,0,0.72); pointer-events: auto; }
-
+  #overlay.active { background: rgba(10,5,0,0.75); pointer-events: auto; }
+ 
+  /* ── LETTER CARD ── */
   #letter-card {
-    position: fixed; z-index: 10; width: var(--letter-w); min-height: 360px;
-    left: 50%; top: 50%;
-    transform: translate(-50%, -50%) scale(0) translateY(200px);
-    opacity: 0; pointer-events: none;
-    background: var(--paper); border-radius: 3px;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,0,0,0.15);
+    position: fixed; z-index: 10;
+    /* Mobile: full width with margin, positioned from top to allow scroll */
+    width: min(500px, 94vw);
+    max-height: 88vh;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    pointer-events: none;
+    background: var(--paper);
+    border-radius: 6px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
   }
   #letter-card.open        { animation: letter-open .65s cubic-bezier(.22,.68,0,1.2) forwards; pointer-events: auto; }
-  #letter-card.close-left  { animation: letter-exit-left .45s cubic-bezier(.4,0,.6,1) forwards; pointer-events: none; }
-  #letter-card.close-right { animation: letter-exit-right .45s cubic-bezier(.4,0,.6,1) forwards; pointer-events: none; }
-  #letter-card.enter-right { animation: letter-enter-right .55s cubic-bezier(.22,.68,0,1.2) forwards; pointer-events: auto; }
-  #letter-card.enter-left  { animation: letter-enter-left .55s cubic-bezier(.22,.68,0,1.2) forwards; pointer-events: auto; }
-
+  #letter-card.close-left  { animation: letter-exit-left .4s cubic-bezier(.4,0,.6,1) forwards; pointer-events: none; }
+  #letter-card.close-right { animation: letter-exit-right .4s cubic-bezier(.4,0,.6,1) forwards; pointer-events: none; }
+  #letter-card.enter-right { animation: letter-enter-right .5s cubic-bezier(.22,.68,0,1.2) forwards; pointer-events: auto; }
+  #letter-card.enter-left  { animation: letter-enter-left .5s cubic-bezier(.22,.68,0,1.2) forwards; pointer-events: auto; }
+ 
   @keyframes letter-open {
-    0%   { transform: translate(-50%,-50%) scale(0.3) translateY(280px); opacity: 0; }
+    0%   { transform: translate(-50%,-50%) scale(0.3); opacity: 0; }
     60%  { opacity: 1; }
-    100% { transform: translate(-50%,-50%) scale(1) translateY(0); opacity: 1; }
+    100% { transform: translate(-50%,-50%) scale(1); opacity: 1; }
   }
   @keyframes letter-exit-left {
     0%   { transform: translate(-50%,-50%) scale(1) translateX(0); opacity: 1; }
-    100% { transform: translate(-50%,-50%) scale(0.8) translateX(-120%); opacity: 0; }
+    100% { transform: translate(-50%,-50%) scale(0.85) translateX(-110%); opacity: 0; }
   }
   @keyframes letter-exit-right {
     0%   { transform: translate(-50%,-50%) scale(1) translateX(0); opacity: 1; }
-    100% { transform: translate(-50%,-50%) scale(0.8) translateX(120%); opacity: 0; }
+    100% { transform: translate(-50%,-50%) scale(0.85) translateX(110%); opacity: 0; }
   }
   @keyframes letter-enter-right {
-    0%   { transform: translate(-50%,-50%) scale(0.85) translateX(120%); opacity: 0; }
+    0%   { transform: translate(-50%,-50%) scale(0.85) translateX(110%); opacity: 0; }
     100% { transform: translate(-50%,-50%) scale(1) translateX(0); opacity: 1; }
   }
   @keyframes letter-enter-left {
-    0%   { transform: translate(-50%,-50%) scale(0.85) translateX(-120%); opacity: 0; }
+    0%   { transform: translate(-50%,-50%) scale(0.85) translateX(-110%); opacity: 0; }
     100% { transform: translate(-50%,-50%) scale(1) translateX(0); opacity: 1; }
   }
-
+ 
+  /* ── ENVELOPE FLAP ── */
   .envelope-flap {
-    height: 52px;
+    flex-shrink: 0;
+    height: 48px;
     background: linear-gradient(135deg, #d4b896 0%, #e8d0b0 50%, #c8a87a 100%);
     position: relative; overflow: hidden;
   }
   .envelope-flap::before {
     content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-    border: 26px solid transparent; border-bottom-color: var(--paper);
+    border: 24px solid transparent; border-bottom-color: var(--paper);
   }
   .flap-wax {
-    position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
-    width: 32px; height: 32px;
+    position: absolute; bottom: -9px; left: 50%; transform: translateX(-50%);
+    width: 28px; height: 28px;
     background: radial-gradient(circle at 35% 35%, #c03030, #7a1515);
     border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-size: 12px; color: rgba(255,255,255,0.7); font-family: serif; z-index: 2;
+    font-size: 11px; color: rgba(255,255,255,0.7); z-index: 2;
     box-shadow: 0 2px 6px rgba(0,0,0,0.4);
   }
-
-  .letter-body { padding: 28px 36px 20px; }
-  .letter-date { font-family: 'Lora', serif; font-style: italic; font-size: 12px; color: var(--ink-light); text-align: right; margin-bottom: 18px; }
-  .letter-content { font-family: 'Lora', serif; font-size: 15px; line-height: 1.85; color: var(--ink); }
-  .letter-content h2 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; margin-bottom: 14px; color: var(--wood-dark); }
-  .letter-content p { margin-bottom: 12px; }
-  .letter-content em { font-style: italic; color: var(--ink-light); }
-  .letter-content .signature { font-family: 'Playfair Display', serif; font-style: italic; font-size: 20px; margin-top: 20px; color: var(--wood-dark); }
-  .letter-content img { display: block; max-width: 100%; border-radius: 4px; margin: 14px auto; box-shadow: 0 4px 12px rgba(0,0,0,0.15); pointer-events: none; }
-  .letter-divider { border: none; border-top: 1px solid rgba(100,60,20,0.2); margin: 16px 0; }
-
-  .letter-nav {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 24px 16px; border-top: 1px solid rgba(100,60,20,0.12);
-  }
-  .nav-btn {
-    padding: 8px 18px; border: 1.5px solid rgba(100,60,20,0.35); border-radius: 30px;
-    background: transparent; font-family: 'Lora', serif; font-size: 13px;
-    color: var(--ink-light); cursor: pointer; transition: all .2s;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .nav-btn:hover { background: rgba(100,60,20,0.08); color: var(--ink); border-color: rgba(100,60,20,0.55); }
-  .nav-btn:disabled { opacity: 0.3; cursor: default; }
-  .nav-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-  .letter-counter { font-family: 'Playfair Display', serif; font-style: italic; font-size: 13px; color: var(--ink-light); }
-
-  .close-btn {
-    position: absolute; top: 10px; right: 12px; width: 28px; height: 28px; border-radius: 50%;
-    border: 1.5px solid rgba(100,60,20,0.3); background: rgba(245,239,224,0.8); cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; color: var(--ink-light); transition: all .2s; z-index: 3; font-family: sans-serif; line-height: 1;
-  }
-  .close-btn:hover { background: rgba(200,150,80,0.2); color: var(--ink); }
-
-  .lined {
-    background: repeating-linear-gradient(transparent, transparent 29px, rgba(100,130,200,0.15) 30px);
-    background-color: var(--paper); background-position: 0 34px;
-  }
-
+ 
+  /* ── POSTCARD HEADER ── */
   .postcard-header {
-    height: 160px;
+    flex-shrink: 0;
+    height: 130px;
     background: linear-gradient(135deg, #2a6e8c 0%, #1a4a6a 50%, #0f2d42 100%);
     display: flex; align-items: center; justify-content: center;
-    font-family: 'Playfair Display', serif; font-size: clamp(24px, 5vw, 36px);
+    font-family: 'Playfair Display', serif; font-size: clamp(20px, 5vw, 30px);
     color: rgba(255,255,255,0.85); font-style: italic; letter-spacing: 0.06em;
     position: relative; overflow: hidden;
   }
@@ -282,34 +242,127 @@
     content: ''; position: absolute; inset: 0;
     background: radial-gradient(ellipse 80% 60% at 50% 80%, rgba(255,180,80,0.2), transparent);
   }
-
+ 
+  /* ── SCROLLABLE BODY ── */
   .letter-body-scroll {
-    max-height: min(55vh, 400px); overflow-y: auto;
-    scrollbar-width: thin; scrollbar-color: rgba(100,60,20,0.3) transparent;
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(100,60,20,0.3) transparent;
   }
-  .letter-body-scroll::-webkit-scrollbar { width: 4px; }
+  .letter-body-scroll::-webkit-scrollbar { width: 3px; }
   .letter-body-scroll::-webkit-scrollbar-thumb { background: rgba(100,60,20,0.3); border-radius: 4px; }
-
+ 
+  .letter-body {
+    padding: 22px 24px 16px;
+    position: relative;
+  }
+ 
+  .lined {
+    background: repeating-linear-gradient(transparent, transparent 29px, rgba(100,130,200,0.15) 30px);
+    background-color: var(--paper); background-position: 0 34px;
+  }
+ 
+  .letter-date {
+    font-family: 'Lora', serif; font-style: italic; font-size: 12px;
+    color: var(--ink-light); text-align: right; margin-bottom: 16px;
+  }
+  .letter-content {
+    font-family: 'Lora', serif; font-size: 15px; line-height: 1.85; color: var(--ink);
+  }
+  .letter-content h2 {
+    font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700;
+    margin-bottom: 12px; color: var(--wood-dark);
+  }
+  .letter-content p { margin-bottom: 12px; }
+  .letter-content em { font-style: italic; color: var(--ink-light); }
+  .letter-content .signature {
+    font-family: 'Playfair Display', serif; font-style: italic; font-size: 19px;
+    margin-top: 18px; color: var(--wood-dark);
+  }
+  .letter-content img {
+    display: block;
+    width: 80%;
+    max-width: 80%;
+    height: auto;
+    margin: 14px auto;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .letter-divider { border: none; border-top: 1px solid rgba(100,60,20,0.2); margin: 14px 0; }
+ 
+  /* ── STAMP ── */
   .stamp {
-    position: absolute; top: 14px; right: 14px; width: 48px; height: 56px;
+    position: absolute; top: 14px; right: 14px; width: 44px; height: 52px;
     border: 3px solid var(--paper); outline: 2px dashed rgba(100,60,20,0.3);
     background: linear-gradient(135deg, #5b8fb9, #2a5f8a);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    font-size: 20px; color: white; border-radius: 2px;
+    font-size: 18px; color: white; border-radius: 2px;
   }
-  .stamp span { font-size: 8px; letter-spacing: 0.5px; color: rgba(255,255,255,0.7); margin-top: 2px; font-family: sans-serif; }
+  .stamp span { font-size: 7px; letter-spacing: 0.5px; color: rgba(255,255,255,0.7); margin-top: 2px; font-family: sans-serif; }
+ 
+  /* ── NAVIGATION ── */
+  .letter-nav {
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 16px 12px;
+    border-top: 1px solid rgba(100,60,20,0.12);
+    background: var(--paper);
+  }
+  .nav-btn {
+    /* Large tap targets for mobile */
+    min-width: 44px; min-height: 44px;
+    padding: 8px 14px;
+    border: 1.5px solid rgba(100,60,20,0.35); border-radius: 30px;
+    background: transparent; font-family: 'Lora', serif; font-size: 13px;
+    color: var(--ink-light); cursor: pointer; transition: all .15s;
+    display: flex; align-items: center; gap: 5px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nav-btn:active { background: rgba(100,60,20,0.12); transform: scale(0.96); }
+  .nav-btn:disabled { opacity: 0.3; pointer-events: none; }
+  .nav-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+  .letter-counter { font-family: 'Playfair Display', serif; font-style: italic; font-size: 13px; color: var(--ink-light); }
+ 
+  /* ── CLOSE BUTTON ── */
+  .close-btn {
+    position: absolute; top: 8px; right: 10px;
+    width: 36px; height: 36px; /* bigger for touch */
+    border-radius: 50%;
+    border: 1.5px solid rgba(100,60,20,0.3); background: rgba(245,239,224,0.9); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; color: var(--ink-light); z-index: 3;
+    font-family: sans-serif; line-height: 1;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .close-btn:active { background: rgba(200,150,80,0.25); transform: scale(0.93); }
+ 
+  /* ── SWIPE HINT (mobile only) ── */
+  .swipe-hint {
+    position: absolute;
+    bottom: 58px; left: 50%; transform: translateX(-50%);
+    font-family: 'Lora', serif; font-style: italic; font-size: 11px;
+    color: rgba(107,87,64,0.5);
+    pointer-events: none; white-space: nowrap;
+    animation: hint-pulse 3s ease-in-out infinite;
+  }
 </style>
 </head>
 <body>
-
+ 
 <div class="dust" id="dust"></div>
-
+ 
 <div id="scene">
   <div id="mailbox-wrap">
-    <div style="position:relative; width:200px; margin:0 auto;">
+    <div style="position:relative; width:170px; margin:0 auto;">
       <div class="flag-pole"><div class="flag"></div></div>
       <div class="box-lid"></div>
-      <div class="box box-body" id="mailbox" title="Clique para abrir uma carta">
+      <div class="box box-body" id="mailbox" title="Toque para abrir uma carta">
         <div class="box-slot"></div>
         <div class="letters-out">
           <div class="letter-peek" style="background:#f5e8c0; --rot:-5deg; --dur:3.2s; --del:0s;"></div>
@@ -322,20 +375,19 @@
     </div>
     <div class="post"></div>
   </div>
-  <p id="hint">✦ clique na caixa para abrir uma carta ✦</p>
+  <p id="hint">✦ toque na caixa para abrir uma carta ✦</p>
 </div>
-
+ 
 <div id="overlay"></div>
-
+ 
 <div id="letter-card">
-  <button class="close-btn" id="close-btn">✕</button>
-  <div id="letter-inner"></div>
+  <button class="close-btn" id="close-btn" aria-label="Fechar carta">✕</button>
+  <div id="letter-inner" style="display:contents;"></div>
 </div>
-
+ 
 <script>
 const letters = [
   {
-    // Carta 1: Declaração de Amor (com imagem)
     variant: 'classic',
     date: '❤️ Para você',
     content: `
@@ -344,11 +396,9 @@ const letters = [
       <p>O seu sorriso ilumina os meus dias, o seu olhar penetra no meu coração e a sua existência é o meu motivo de viver.</p>
       <p class="signature">Com todo o meu amor ❤️</p>
       <img src="imagem1.png" alt="Imagem da carta 1">
-
     `
   },
   {
-    // Carta 2: Como Tudo Começou (com imagem)
     variant: 'lined',
     date: '✨ Uma tarde especial',
     content: `
@@ -358,11 +408,9 @@ const letters = [
       <p>Hoje, tudo o que eu quero é fazê-la feliz e poder viver o meu "feliz para sempre" ao lado dela.</p>
       <p class="signature">Seu eterno apaixonado 🌙</p>
       <img src="imagem2.png" alt="Imagem da carta 2">
-
     `
   },
   {
-    // Carta 3: Poema de Devoção (sem imagem)
     variant: 'postcard',
     date: '🌹 Um poema só seu',
     headerText: 'POEMA DE DEVOÇÃO',
@@ -374,11 +422,9 @@ const letters = [
       <p>Ó, meu amor, deixe-me dizer "sim" para a nossa união, para que eu possa dizer finalmente:</p>
       <p class="signature"><em>Amor, te amo um montão!</em> 🌹</p>
       <img src="imagem3.png" alt="Imagem da carta 3">
-
     `
   },
-    {
-    // Carta 4: Pedido de Desculpas e Promessa (com imagem)
+  {
     variant: 'stamp',
     date: '🌸 Do fundo do coração',
     stamp: '🙏',
@@ -390,7 +436,6 @@ const letters = [
     `
   },
   {
-    // Carta 5: O Pedido (sem imagem — a mais especial, deixada simples e direta)
     variant: 'classic',
     date: '💍 O momento mais importante',
     content: `
@@ -401,90 +446,125 @@ const letters = [
     `
   }
 ];
-
+ 
 let current = 0, isAnimating = false, isOpen = false;
-const mailbox = document.getElementById('mailbox');
-const overlay = document.getElementById('overlay');
-const card    = document.getElementById('letter-card');
-const closeBtn= document.getElementById('close-btn');
-const hint    = document.getElementById('hint');
-const inner   = document.getElementById('letter-inner');
-
+const mailbox  = document.getElementById('mailbox');
+const overlay  = document.getElementById('overlay');
+const card     = document.getElementById('letter-card');
+const closeBtn = document.getElementById('close-btn');
+const hint     = document.getElementById('hint');
+const inner    = document.getElementById('letter-inner');
+ 
+/* dust particles */
 const dustEl = document.getElementById('dust');
-for (let i = 0; i < 22; i++) {
+for (let i = 0; i < 18; i++) {
   const s = document.createElement('span');
   const left = Math.random()*100, dur = 6+Math.random()*10, del = Math.random()*dur, dx = (Math.random()-.5)*60;
   s.style.cssText = `left:${left}%;--dx:${dx}px;animation-duration:${dur}s;animation-delay:-${del}s;`;
   dustEl.appendChild(s);
 }
-
+ 
 function buildLetter(i) {
   const l = letters[i];
   let html = '';
+ 
   if (l.variant === 'postcard') {
     html += `<div class="postcard-header">${l.headerText||'CARTÃO POSTAL'}</div>`;
-    html += `<div class="letter-body"><div class="letter-date">${l.date}</div><div class="letter-content">${l.content}</div></div>`;
+    html += `<div class="letter-body-scroll"><div class="letter-body">`;
+    html += `<div class="letter-date">${l.date}</div>`;
+    html += `<div class="letter-content">${l.content}</div>`;
+    html += `</div></div>`;
   } else {
     html += `<div class="envelope-flap"><div class="flap-wax">✦</div></div>`;
-    const bc = l.variant==='lined' ? 'letter-body letter-body-scroll lined' : 'letter-body letter-body-scroll';
-    html += `<div class="${bc}" style="position:relative;">`;
+    const bc = l.variant==='lined' ? 'lined' : '';
+    html += `<div class="letter-body-scroll"><div class="letter-body ${bc}">`;
     if (l.stamp) html += `<div class="stamp">${l.stamp}<span>CORREIOS</span></div>`;
-    html += `<div class="letter-date">${l.date}</div><div class="letter-content">${l.content}</div></div>`;
+    html += `<div class="letter-date">${l.date}</div>`;
+    html += `<div class="letter-content">${l.content}</div>`;
+    html += `</div></div>`;
   }
+ 
   html += `<div class="letter-nav">
-    <button class="nav-btn" id="prev-btn" ${i===0?'disabled':''}>
+    <button class="nav-btn" id="prev-btn" ${i===0?'disabled':''} aria-label="Carta anterior">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Anterior
     </button>
     <span class="letter-counter">${i+1} / ${letters.length}</span>
-    <button class="nav-btn" id="next-btn" ${i===letters.length-1?'disabled':''}>
+    <button class="nav-btn" id="next-btn" ${i===letters.length-1?'disabled':''} aria-label="Próxima carta">
       Próxima <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
     </button>
   </div>`;
+ 
   return html;
 }
-
+ 
 function openLetter(idx) {
   if (isAnimating) return;
   isAnimating = true; current = idx;
   inner.innerHTML = buildLetter(current);
-  card.className = ''; card.style.display = 'block';
+  card.className = ''; card.style.display = 'flex';
   overlay.classList.add('active'); hint.style.opacity = '0';
-  void card.offsetWidth; card.classList.add('open');
+  void card.offsetWidth;
+  card.classList.add('open');
   card.addEventListener('animationend', () => { isAnimating=false; isOpen=true; bindNav(); }, {once:true});
 }
-
+ 
 function closeLetter(dir='left') {
   if (isAnimating||!isOpen) return;
   isAnimating=true; isOpen=false;
   card.classList.remove('open','enter-right','enter-left');
-  void card.offsetWidth; card.classList.add(dir==='left'?'close-left':'close-right');
+  void card.offsetWidth;
+  card.classList.add(dir==='left'?'close-left':'close-right');
   overlay.classList.remove('active'); hint.style.opacity='';
-  card.addEventListener('animationend', () => { card.style.display='none'; card.className=''; isAnimating=false; }, {once:true});
+  card.addEventListener('animationend', () => {
+    card.style.display='none'; card.className=''; isAnimating=false;
+  }, {once:true});
 }
-
+ 
 function goTo(idx, dir) {
-  if (isAnimating) return; isAnimating=true;
-  const exitClass = dir==='next'?'close-left':'close-right';
-  const enterClass= dir==='next'?'enter-right':'enter-left';
+  if (isAnimating) return;
+  isAnimating=true;
+  const exitClass  = dir==='next'?'close-left':'close-right';
+  const enterClass = dir==='next'?'enter-right':'enter-left';
   card.classList.remove('open','enter-right','enter-left');
-  void card.offsetWidth; card.classList.add(exitClass);
+  void card.offsetWidth;
+  card.classList.add(exitClass);
   card.addEventListener('animationend', () => {
     current=idx; inner.innerHTML=buildLetter(current);
-    card.classList.remove(exitClass); void card.offsetWidth; card.classList.add(enterClass);
+    card.classList.remove(exitClass); void card.offsetWidth;
+    card.classList.add(enterClass);
     card.addEventListener('animationend', () => { isAnimating=false; isOpen=true; bindNav(); }, {once:true});
   }, {once:true});
 }
-
+ 
 function bindNav() {
-  const p=document.getElementById('prev-btn'), n=document.getElementById('next-btn');
+  const p = document.getElementById('prev-btn');
+  const n = document.getElementById('next-btn');
   if (p) p.addEventListener('click', () => { if(current>0) goTo(current-1,'prev'); });
   if (n) n.addEventListener('click', () => { if(current<letters.length-1) goTo(current+1,'next'); });
 }
-
+ 
+/* ── Touch / swipe support ── */
+let touchStartX = 0, touchStartY = 0;
+card.addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+}, {passive:true});
+ 
+card.addEventListener('touchend', e => {
+  if (!isOpen || isAnimating) return;
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
+  if (Math.abs(dx) > 60 && dy < 50) {
+    if (dx < 0 && current < letters.length-1) goTo(current+1,'next');
+    else if (dx > 0 && current > 0) goTo(current-1,'prev');
+  }
+}, {passive:true});
+ 
+/* ── Events ── */
 mailbox.addEventListener('click', () => { if(!isOpen) openLetter(0); });
 closeBtn.addEventListener('click', () => closeLetter('left'));
-overlay.addEventListener('click', (e) => { if(e.target===overlay) closeLetter('left'); });
-document.addEventListener('keydown', (e) => {
+overlay.addEventListener('click', e => { if(e.target===overlay) closeLetter('left'); });
+document.addEventListener('keydown', e => {
   if (!isOpen) return;
   if (e.key==='Escape') closeLetter('left');
   if (e.key==='ArrowRight' && current<letters.length-1) goTo(current+1,'next');
